@@ -12,20 +12,20 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
-public class PersonController {
+class PersonController {
 
     private final PersonRepository repository;
+    private final PersonModelAssembler assembler;
 
-    PersonController(PersonRepository repository) {
+    PersonController(PersonRepository repository, PersonModelAssembler assembler) {
         this.repository = repository;
+        this.assembler = assembler;
     }
 
     @GetMapping("/persons")
     CollectionModel<EntityModel<Person>> all() {
         List<EntityModel<Person>> persons = repository.findAll().stream()
-                .map(person -> EntityModel.of(person,
-                        linkTo(methodOn(PersonController.class).one(person.getId())).withSelfRel(),
-                        linkTo(methodOn(PersonController.class).all()).withRel("persons")))
+                .map(assembler::toModel)
                 .collect(Collectors.toList());
 
         return CollectionModel.of(persons, linkTo(methodOn(PersonController.class).all()).withSelfRel());
@@ -42,9 +42,7 @@ public class PersonController {
         Person person = repository.findById(id)
                 .orElseThrow(() -> new PersonNotFoundException(id));
 
-        return EntityModel.of(person,
-                linkTo(methodOn(PersonController.class).one(id)).withSelfRel(),
-                linkTo(methodOn(PersonController.class).all()).withRel("persons"));
+        return assembler.toModel(person);
     }
 
     @PutMapping("/persons/{id}")
