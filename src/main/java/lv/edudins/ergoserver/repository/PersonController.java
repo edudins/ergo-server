@@ -1,9 +1,15 @@
 package lv.edudins.ergoserver.repository;
 
 import lv.edudins.ergoserver.domain.Person;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 public class PersonController {
@@ -14,30 +20,35 @@ public class PersonController {
         this.repository = repository;
     }
 
-    // Aggregate root
-    // tag::get-aggregate-root[]
     @GetMapping("/persons")
-    List<Person> all() {
-        return repository.findAll();
+    CollectionModel<EntityModel<Person>> all() {
+        List<EntityModel<Person>> persons = repository.findAll().stream()
+                .map(person -> EntityModel.of(person,
+                        linkTo(methodOn(PersonController.class).one(person.getId())).withSelfRel(),
+                        linkTo(methodOn(PersonController.class).all()).withRel("persons")))
+                .collect(Collectors.toList());
+
+        return CollectionModel.of(persons, linkTo(methodOn(PersonController.class).all()).withSelfRel());
     }
-    // end::get-aggregate-root[]
 
     @PostMapping("/persons")
     Person newPerson(@RequestBody Person newPerson) {
         return repository.save(newPerson);
     }
 
-    // Single item
-
     @GetMapping("/persons/{id}")
-    Person one(@PathVariable Long id) {
+    EntityModel<Person> one(@PathVariable Long id) {
 
-        return repository.findById(id)
+        Person person = repository.findById(id)
                 .orElseThrow(() -> new PersonNotFoundException(id));
+
+        return EntityModel.of(person,
+                linkTo(methodOn(PersonController.class).one(id)).withSelfRel(),
+                linkTo(methodOn(PersonController.class).all()).withRel("persons"));
     }
 
     @PutMapping("/persons/{id}")
-    Person replaceEmployee(@RequestBody Person newPerson, @PathVariable Long id) {
+    Person replacePerson(@RequestBody Person newPerson, @PathVariable Long id) {
 
         return repository.findById(id)
                 .map(person -> {
@@ -57,7 +68,7 @@ public class PersonController {
     }
 
     @DeleteMapping("/persons/{id}")
-    void deleteEmployee(@PathVariable Long id) {
+    void deletePerson(@PathVariable Long id) {
         repository.deleteById(id);
     }
 }
