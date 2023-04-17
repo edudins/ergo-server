@@ -36,6 +36,24 @@
             "href": "http://localhost:8080/persons"
           }
         }
+      },
+      {
+        "id": 3,
+        "personalId": 3000,
+        "firstName": "Maria",
+        "lastName": "Schulz",
+        "gender": "FEMALE",
+        "dateOfBirth": "2023-04-17T15:32:18.877714+03:00",
+        "phoneNumber": "+37155555555",
+        "email": "mariaschulz@info.lv",
+        "_links": {
+          "self": {
+            "href": "http://localhost:8080/persons/3"
+          },
+          "persons": {
+            "href": "http://localhost:8080/persons"
+          }
+        }
       }
     ]
   },
