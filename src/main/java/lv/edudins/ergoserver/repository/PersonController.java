@@ -3,6 +3,8 @@ package lv.edudins.ergoserver.repository;
 import lv.edudins.ergoserver.domain.Person;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +26,7 @@ class PersonController {
 
     @GetMapping("/persons")
     CollectionModel<EntityModel<Person>> all() {
+
         List<EntityModel<Person>> persons = repository.findAll().stream()
                 .map(assembler::toModel)
                 .collect(Collectors.toList());
@@ -32,8 +35,13 @@ class PersonController {
     }
 
     @PostMapping("/persons")
-    Person newPerson(@RequestBody Person newPerson) {
-        return repository.save(newPerson);
+    ResponseEntity<?> newPerson(@RequestBody Person newPerson) {
+
+        EntityModel<Person> entityModel = assembler.toModel(repository.save(newPerson));
+
+        return ResponseEntity
+                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(entityModel);
     }
 
     @GetMapping("/persons/{id}")
