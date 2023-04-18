@@ -7,7 +7,9 @@ import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -51,17 +53,31 @@ class PersonController {
     }
 
     @GetMapping("/persons/find")
-    CollectionModel<EntityModel<Person>> multiple(@RequestParam String firstName, @RequestParam String lastName) {
-        List<EntityModel<Person>> persons = repository.findByLastName(lastName)
-                .stream()
-                .filter(p -> p.getFirstName().equals(firstName))
-                .map(assembler::toModel)
-                .toList();
-        if (persons.size() == 0) {
-            throw new PersonNotFoundException(firstName + " " + lastName);
+    CollectionModel<EntityModel<Person>> multiple(@RequestParam Map<String, String> params) {
+        String firstName = params.get("firstName");
+        String lastName = params.get("lastName");
+        String dateOfBirth = params.get("dateOfBirth");
+        List<EntityModel<Person>> persons;
+
+        if (dateOfBirth != null) {
+            LocalDate parsed = LocalDate.parse(dateOfBirth);
+            persons = repository.findByDateOfBirth(parsed)
+                    .stream()
+                    .map(assembler::toModel)
+                    .toList();
+        } else {
+            persons = repository.findByLastName(lastName)
+                    .stream()
+                    .filter(p -> p.getFirstName().equals(firstName))
+                    .map(assembler::toModel)
+                    .toList();
         }
 
-        return CollectionModel.of(persons, linkTo(methodOn(PersonController.class).multiple(firstName, lastName)).withSelfRel());
+        if (persons.size() == 0) {
+            throw new PersonNotFoundException(firstName + " " + lastName + " " + dateOfBirth);
+        }
+
+        return CollectionModel.of(persons, linkTo(methodOn(PersonController.class).multiple(params)).withSelfRel());
     }
 
     @PutMapping("/persons/{id}")

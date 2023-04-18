@@ -8,7 +8,7 @@ import lombok.Setter;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.time.OffsetDateTime;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
@@ -23,7 +23,7 @@ public class Person {
     private String firstName;
     private String lastName;
     private Gender gender;
-    private OffsetDateTime dateOfBirth;
+    private LocalDate dateOfBirth;
     private String phoneNumber;
     private String email;
 

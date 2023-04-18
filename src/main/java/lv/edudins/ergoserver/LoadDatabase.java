@@ -9,7 +9,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDate;
 
 @Configuration
 public class LoadDatabase {
@@ -26,7 +26,7 @@ public class LoadDatabase {
                     "John",
                     "Pleasant",
                     Gender.MALE,
-                    OffsetDateTime.now(),
+                    LocalDate.of(2000, 1, 1),
                     "+37111111111",
                     "johnpleasant@info.lv")));
             log.info("Preloading " + repository.save(new Person(
@@ -35,7 +35,7 @@ public class LoadDatabase {
                     "Christina",
                     "Pleasant",
                     Gender.FEMALE,
-                    OffsetDateTime.now(),
+                    LocalDate.of(1999, 1, 1),
                     "+37122222222",
                     "christinapleasant@info.lv")));
         };
