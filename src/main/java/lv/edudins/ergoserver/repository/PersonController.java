@@ -50,6 +50,20 @@ class PersonController {
         return assembler.toModel(person);
     }
 
+    @GetMapping("/persons/find")
+    CollectionModel<EntityModel<Person>> multiple(@RequestParam String firstName, @RequestParam String lastName) {
+        List<EntityModel<Person>> persons = repository.findByLastName(lastName)
+                .stream()
+                .filter(p -> p.getFirstName().equals(firstName))
+                .map(assembler::toModel)
+                .toList();
+        if (persons.size() == 0) {
+            throw new PersonNotFoundException(firstName + " " + lastName);
+        }
+
+        return CollectionModel.of(persons, linkTo(methodOn(PersonController.class).multiple(firstName, lastName)).withSelfRel());
+    }
+
     @PutMapping("/persons/{id}")
     Person replacePerson(@RequestBody Person newPerson, @PathVariable Long id) {
 
