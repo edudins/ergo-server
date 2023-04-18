@@ -26,7 +26,6 @@ class PersonController {
 
     @GetMapping("/persons")
     CollectionModel<EntityModel<Person>> all() {
-
         List<EntityModel<Person>> persons = repository.findAll().stream()
                 .map(assembler::toModel)
                 .collect(Collectors.toList());
@@ -36,7 +35,6 @@ class PersonController {
 
     @PostMapping("/persons")
     ResponseEntity<?> newPerson(@RequestBody Person newPerson) {
-
         EntityModel<Person> entityModel = assembler.toModel(repository.save(newPerson));
 
         return ResponseEntity
@@ -46,7 +44,6 @@ class PersonController {
 
     @GetMapping("/persons/{id}")
     EntityModel<Person> one(@PathVariable Long id) {
-
         Person person = repository.findById(id)
                 .orElseThrow(() -> new PersonNotFoundException(id));
 
@@ -74,7 +71,8 @@ class PersonController {
     }
 
     @DeleteMapping("/persons/{id}")
-    void deletePerson(@PathVariable Long id) {
+    ResponseEntity<?> deletePerson(@PathVariable Long id) {
         repository.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }
