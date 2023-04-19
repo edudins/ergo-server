@@ -10,4 +10,9 @@ class ErgoServerApplicationTests {
 	void contextLoads() {
 	}
 
+	@Test
+	void helloTest() {
+		System.out.println("Hello Test");
+	}
+
 }

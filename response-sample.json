@@ -3,11 +3,11 @@
     "personList": [
       {
         "id": 1,
-        "personalId": 1000,
+        "personalId": "",
         "firstName": "John",
         "lastName": "Pleasant",
         "gender": "MALE",
-        "dateOfBirth": "2023-04-17T15:32:18.877714+03:00",
+        "dateOfBirth": "2000-01-01",
         "phoneNumber": "+37111111111",
         "email": "johnpleasant@info.lv",
         "_links": {
@@ -21,34 +21,16 @@
       },
       {
         "id": 2,
-        "personalId": 2000,
+        "personalId": "",
         "firstName": "Christina",
         "lastName": "Pleasant",
         "gender": "FEMALE",
-        "dateOfBirth": "2023-04-17T15:32:18.955831+03:00",
+        "dateOfBirth": "1999-01-01",
         "phoneNumber": "+37122222222",
         "email": "christinapleasant@info.lv",
         "_links": {
           "self": {
             "href": "http://localhost:8080/persons/2"
-          },
-          "persons": {
-            "href": "http://localhost:8080/persons"
-          }
-        }
-      },
-      {
-        "id": 3,
-        "personalId": 3000,
-        "firstName": "Maria",
-        "lastName": "Schulz",
-        "gender": "FEMALE",
-        "dateOfBirth": "2023-04-17T15:32:18.877714+03:00",
-        "phoneNumber": "+37155555555",
-        "email": "mariaschulz@info.lv",
-        "_links": {
-          "self": {
-            "href": "http://localhost:8080/persons/3"
           },
           "persons": {
             "href": "http://localhost:8080/persons"

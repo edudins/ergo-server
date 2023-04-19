@@ -5,11 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 @Setter
@@ -19,13 +18,20 @@ import java.util.Objects;
 public class Person {
 
     private @Id @GeneratedValue Long id;
-    private Long personalId;
+    private String personalId;
     private String firstName;
     private String lastName;
     private Gender gender;
     private LocalDate dateOfBirth;
     private String phoneNumber;
     private String email;
+
+    @PrePersist
+    public void setPersonalId() {
+        if (this.personalId == null || this.personalId.isBlank()) {
+            this.personalId = UUID.randomUUID().toString();
+        }
+    }
 
     @Override
     public boolean equals(Object o) {

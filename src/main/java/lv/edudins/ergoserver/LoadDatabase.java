@@ -22,7 +22,7 @@ public class LoadDatabase {
         return args -> {
             log.info("Preloading " + repository.save(new Person(
                     1L,
-                    1000L,
+                    "1000",
                     "John",
                     "Pleasant",
                     Gender.MALE,
@@ -31,7 +31,7 @@ public class LoadDatabase {
                     "johnpleasant@info.lv")));
             log.info("Preloading " + repository.save(new Person(
                     2L,
-                    2000L,
+                    "2000",
                     "Christina",
                     "Pleasant",
                     Gender.FEMALE,

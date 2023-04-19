@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -85,7 +86,6 @@ class PersonController {
 
         return repository.findById(id)
                 .map(person -> {
-                    person.setPersonalId(newPerson.getPersonalId());
                     person.setFirstName(newPerson.getFirstName());
                     person.setLastName(newPerson.getLastName());
                     person.setGender(newPerson.getGender());
