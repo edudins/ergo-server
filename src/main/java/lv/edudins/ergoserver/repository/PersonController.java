@@ -1,6 +1,7 @@
 package lv.edudins.ergoserver.repository;
 
 import lv.edudins.ergoserver.domain.Person;
+import lv.edudins.ergoserver.service.PersonService;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -21,15 +21,17 @@ class PersonController {
 
     private final PersonRepository repository;
     private final PersonModelAssembler assembler;
+    private final PersonService service;
 
-    PersonController(PersonRepository repository, PersonModelAssembler assembler) {
+    PersonController(PersonRepository repository, PersonModelAssembler assembler, PersonService service) {
         this.repository = repository;
         this.assembler = assembler;
+        this.service = service;
     }
 
     @GetMapping("/persons")
     CollectionModel<EntityModel<Person>> all() {
-        List<EntityModel<Person>> persons = repository.findAll().stream()
+        List<EntityModel<Person>> persons = service.findAll().stream()
                 .map(assembler::toModel)
                 .collect(Collectors.toList());
 
@@ -38,7 +40,7 @@ class PersonController {
 
     @PostMapping("/persons")
     ResponseEntity<?> newPerson(@RequestBody Person newPerson) {
-        EntityModel<Person> entityModel = assembler.toModel(repository.save(newPerson));
+        EntityModel<Person> entityModel = assembler.toModel(service.save(newPerson));
 
         return ResponseEntity
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
