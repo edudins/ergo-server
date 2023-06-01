@@ -4,7 +4,6 @@ import lv.edudins.ergoserver.domain.Person;
 import lv.edudins.ergoserver.repository.PersonRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,10 +47,7 @@ public class PersonService {
                     person.setEmail(newPerson.getEmail());
                     return repository.save(person);
                 })
-                .orElseGet(() -> {
-                    newPerson.setId(id);
-                    return repository.save(newPerson);
-                });
+                .orElseGet(() -> repository.save(newPerson));
     }
 
     public void deleteById(Long id) {
