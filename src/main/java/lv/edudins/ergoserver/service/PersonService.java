@@ -29,15 +29,12 @@ public class PersonService {
     }
 
     public List<Person> search(String firstName, String lastName, String dateOfBirth) {
-        if (dateOfBirth != null) {
-            LocalDate parsed = LocalDate.parse(dateOfBirth);
-            return repository.findByDateOfBirth(parsed);
-        } else {
-            return repository.findByLastName(lastName)
-                    .stream()
-                    .filter(p -> p.getFirstName().equals(firstName))
-                    .toList();
-        }
+        return repository.findAll()
+                .stream()
+                .filter(p -> firstName == null || p.getFirstName().equals(firstName))
+                .filter(p -> lastName == null || p.getLastName().equals(lastName))
+                .filter(p -> dateOfBirth == null || dateOfBirth.equals(p.getDateOfBirth().toString()))
+                .toList();
     }
 
     public Person replace(Person newPerson, Long id) {
