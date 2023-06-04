@@ -23,6 +23,10 @@ Implement REST service based on spring-boot framework
 - Log some service activities to log file and in database
 - Implement unit tests
 
+## logging
+
+Each person service activity logs to a file in `/logs/application.log` as well as in the database.
+
 ## curl commands
 
 **all persons**
