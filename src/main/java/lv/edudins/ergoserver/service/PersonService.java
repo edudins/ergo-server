@@ -4,6 +4,7 @@ import lv.edudins.ergoserver.domain.Person;
 import lv.edudins.ergoserver.repository.person.PersonRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +35,9 @@ public class PersonService {
 
     public List<Person> search(String firstName, String lastName, String dateOfBirth) {
         logService.logAndSave("Searching for person firstName[" + firstName + "], lastName[" + lastName + "] dateOfBirth[" + dateOfBirth + "]");
+        if (firstName == null && lastName == null && dateOfBirth == null) {
+            return Collections.emptyList();
+        }
         return repository.findAll()
                 .stream()
                 .filter(p -> firstName == null || p.getFirstName().equals(firstName))
