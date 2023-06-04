@@ -2,7 +2,7 @@ package lv.edudins.ergoserver;
 
 import lv.edudins.ergoserver.domain.Gender;
 import lv.edudins.ergoserver.domain.Person;
-import lv.edudins.ergoserver.repository.PersonRepository;
+import lv.edudins.ergoserver.repository.person.PersonRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;

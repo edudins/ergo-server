@@ -1,4 +1,4 @@
-package lv.edudins.ergoserver.repository;
+package lv.edudins.ergoserver.repository.person;
 
 class PersonNotFoundException extends RuntimeException {
 

@@ -1,4 +1,4 @@
-package lv.edudins.ergoserver.repository;
+package lv.edudins.ergoserver.repository.person;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;

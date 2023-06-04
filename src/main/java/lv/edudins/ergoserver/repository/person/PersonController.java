@@ -1,4 +1,4 @@
-package lv.edudins.ergoserver.repository;
+package lv.edudins.ergoserver.repository.person;
 
 import lv.edudins.ergoserver.domain.Person;
 import lv.edudins.ergoserver.service.PersonService;
